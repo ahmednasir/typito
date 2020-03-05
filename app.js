@@ -14,10 +14,12 @@ app.use(bodyParser.json())
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'assets')));
+app.use(express.static('uploads'))
 
 // API routes
 
 app.use('/', require('./routers/index'))
+app.use('/upload', require('./routers/upload'));
 
 
 app.listen(3000,function(e){
