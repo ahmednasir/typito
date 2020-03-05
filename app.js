@@ -14,7 +14,7 @@ app.use(layout)
 app.use(bodyParser.json())
 
 // mongodb
-mongoose.connect(process.env.DB_STRING,{ useNewUrlParser: true, useUnifiedTopology: true },()=>{
+mongoose.connect(process.env.DB_STRING,{ useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
     console.log("Connected")
 })
 
