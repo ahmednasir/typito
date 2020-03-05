@@ -3,7 +3,7 @@
 <body>
 
 <!-- Wrapper -->
-<div id="wrapper">
+<div id="container-fluid">
 <%- body %>
 <!-- body end -->
 
@@ -17,6 +17,29 @@
 
 
 
+<script>
+  $(function(){
 
+      /* Set the width of the side navigation to 250px */
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+      }
+
+      /* Set the width of the side navigation to 0 */
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+      }
+      $("#openNav").click(function(){
+        openNav()
+      })
+      $(".closebtn").click(function(){
+        closeNav()
+      })
+      
+      // openNav()
+  })
+    
+
+</script>
 </body>
 </html>

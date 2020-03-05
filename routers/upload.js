@@ -1,20 +1,29 @@
 const express = require('express');
 var router = express.Router()
-const multer = require('multer')
+const multer = require('multer');
 var config = require('../config/config');
+var model =  require('../models/ImageMetaModel');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/')
     },
     filename: function (req, file, cb) {
+        let date = new Date().getTime().toString()
+        let fileName = date+file.originalname
+        let obj = new model({
+            filename: fileName
+        })
+        obj.save(function(err, _){
+            if(err) cb(null, false)
+            cb(null, fileName);
+        })
         
-        let fileName = file.originalname
-        cb(null, fileName);
     }
 })
 
 const fileFilter = (req, file, cb) => {
+    console.log(file)
     if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
         cb(null, true)
     } else {
@@ -25,19 +34,24 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     storage: storage,
     limits:{
-        fileSize: 1024*1024*5
+        fileSize: 1024*1024*100
     },
     fileFilter: fileFilter
 }).array('productImage', config.MAX_UPLOAD_LIMIT);
 
-router.post('/', function (req, res) {
-    upload(req, res,function(err){
-        if(err){
-            console.log(err)
-            return res.end("Error")
-        } 
-        res.end("uploaded")
-    })
+router.post('/',upload, function (req, res) {
+    
+    // upload(req, res,function(err){
+    //     if(err){
+    //         console.log(err)
+    //         return res.end("Error")
+    //     } 
+    //     res.end("uploaded")
+    // })
+})
+
+router.get('/', function(req, res){
+    res.render("upload")
 })
 
 module.exports = router

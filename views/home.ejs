@@ -1,0 +1,21 @@
+<%- include('partials/sidenav')%>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="card group-header">
+      Some Heeader
+    </div>
+  </div>
+  <div class="row">
+    <% for(let image of data.Images){%>
+    <div class="col-sm-6 col-md-3 mb-3">
+      <img
+        src="<%= image%>"
+        alt=""
+        class="img-thumbnail  images"
+        
+      />
+    </div>
+    <%}%>
+  </div>
+</div>
