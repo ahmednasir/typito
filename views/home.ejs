@@ -1,20 +1,29 @@
 <%- include('partials/sidenav')%>
 
+<div class="container-fluid nav-bar-container">
+    <nav class="navbar navbar-expand-sm bg-light">
+
+        <!-- Links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link 1</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link 2</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link 3</a>
+          </li>
+        </ul>
+      
+      </nav
+</div>
+
 <div class="container-fluid">
-  <div class="row">
-    <div class="card group-header">
-      Some Heeader
-    </div>
-  </div>
   <div class="row">
     <% for(let image of data.Images){%>
     <div class="col-sm-6 col-md-3 mb-3">
-      <img
-        src="<%= image.thumb%>"
-        alt=""
-        class="img-thumbnail  images"
-        
-      />
+      <img src="<%= image%>" alt="" class="img-thumbnail  images" />
     </div>
     <%}%>
   </div>
