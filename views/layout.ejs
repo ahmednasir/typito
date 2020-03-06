@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <%- include('partials/header')%>
 <body>
-
+  
 <!-- Wrapper -->
-<div id="container-fluid">
+<div id="main">
 <%- body %>
 <!-- body end -->
 
@@ -20,15 +20,16 @@
 <script>
   $(function(){
 
-      /* Set the width of the side navigation to 250px */
       function openNav() {
         document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
       }
 
-      /* Set the width of the side navigation to 0 */
+      
       function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
-      }
+          document.getElementById("mySidenav").style.width = "0";
+          document.getElementById("main").style.marginLeft = "0";
+        }
       $("#openNav").click(function(){
         openNav()
       })
@@ -36,7 +37,19 @@
         closeNav()
       })
       
-      // openNav()
+      $(".upload-button").click(()=>{
+        $("#uploadModal").modal('show')
+      })
+
+      function imageUpload(){
+     
+        
+      }
+
+      imageUpload()
+      openNav()
+
+
   })
     
 

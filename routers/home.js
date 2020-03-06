@@ -5,15 +5,17 @@ var router = express.Router()
 var imageController = require('../controllers/GetImageController');
 
 router.get('/',function(req, res){
-   imageController("first").then(result=>{
-       res.render('home',{
-           data: {
-               Images: result
-           }
-       })
-   }).catch(err=>{
-       res.send(err)
-   })
+//    imageController("first").then(result=>{
+//        res.render('home',
+//        {
+//            data: {
+//                Images: result
+//            }
+//        })
+//    }).catch(err=>{
+//        res.send(err)
+//    })
+res.render('home')
 })
 
 module.exports = router;

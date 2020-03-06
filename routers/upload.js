@@ -2,7 +2,6 @@ const express = require("express");
 var router = express.Router();
 const multer = require("multer");
 var config = require("../config/config");
-var sharp = require("sharp");
 var imageSize = require("image-size");
 var model = require("../models/ImageMetaModel");
 var calculationService = require("../services/calculationService");

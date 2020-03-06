@@ -1,0 +1,52 @@
+<style>
+    *, *::before, *::active{
+        box-sizing: border-box;
+    }
+    body{
+        padding: 0;
+        margin: 0;
+    }
+    img{
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+    #fileslbl{
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        background-color: red;
+        color: white;
+        height: 25vh;
+        padding: 16px;
+        transition: 0.5s;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+        animation-iteration-count: infinite;
+    }
+    #filesfld{
+        display: none;
+    }
+    #progress{
+        background-color: blue;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 25px;
+        padding: 0 5px;
+        width: 0;
+    }
+    @keyframes dropbox{
+
+    }
+</style>
+
+<form id="filesfrm" action="/test" method="post" onsubmit="">
+    <input type="file" name="filesfld" id="filesfld" accept="image/*" multiple>
+    <label for="filesfld" id="fileslbl">Click to choose images or drag and drop</label>
+</form>
+<div style="text-align:left">
+    <div id="progress"></div>
+</div>
