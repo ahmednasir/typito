@@ -42,9 +42,14 @@
 
     }
 </style>
+<script>
+    function stopDefault(){
+        
+    }
+</script>
 
-<form id="filesfrm" action="/test" method="post" onsubmit="">
-    <input type="file" name="filesfld" id="filesfld" accept="image/*" multiple>
+<form id="filesfrm" action="/test" method="post" onsubmit="submitFilesForm(this)">
+    <input type="file" name="filesfld" id="filesfld" accept="image/*" multiple onchange="submitFilesForm(this.form)">
     <label for="filesfld" id="fileslbl">Click to choose images or drag and drop</label>
 </form>
 <div style="text-align:left">
