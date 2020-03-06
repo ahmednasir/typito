@@ -9,19 +9,23 @@ require('dotenv').config()
 
 
 // middlewares
-app.use(cors())
+// app.use(cors())
 app.use(layout)
 app.use(bodyParser.json())
 
 // mongodb
 mongoose.connect(process.env.DB_STRING,{ useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
+    if(err){
+        console.log(err)
+        throw err
+    }
     console.log("Connected")
 })
 
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'assets')));
-app.use(express.static('uploads'))
+app.use(express.static(path.join(__dirname, 'uploads')))
 
 // API routes
 
