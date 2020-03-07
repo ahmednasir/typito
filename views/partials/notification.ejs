@@ -1,24 +1,13 @@
-<style>
-    .notification{
-        position: absolute;
-        width: 85%;
-    }
-.notification-row{
-    margin-left: 0;
-    padding: 15px;
-}
-.notification-close-icon{
-    position: absolute;
-    right: 15px;
-}
-</style>
 <div class="notification">
-  <div class="card">
+  <div class="card" id="notification-card">
     <div class="row notification-row">
       <div class="notification-content">
         Some message
-      </div>
-      <img src="images/close.svg" alt="" class="notification-close-icon" />
+      </div>  
+      <button class="btn notification-close-icon">
+        <img src="images/close.svg" alt="" />
+      </button>    
+      
     </div>
   </div>
 </div>

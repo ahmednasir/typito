@@ -1,170 +1,183 @@
-  /* The side navigation menu */
-  .sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    background-color: #343434;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-  }
+/* The side navigation menu */
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #343434;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
 
-  /* The navigation menu links */
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 20px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-  }
+/* The navigation menu links */
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
 
-  /* When you mouse over the navigation links, change their color */
-  .sidenav a:hover {
-    color: #fed008;
-  }
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #fed008;
+}
 
-  /* Position and style the close button (top right corner) */
-  .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  }
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
 
-  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-  #main {
-    transition: margin-left 0.5s;
-    padding: 20px;
-  }
-  .upload-button {
-    background-color: #fed008;
-    width: 90%;
-    margin-left: 4%;
-    padding: 15px 20px;
-    border-radius: 35px;
-    font-size: 17px;
-  }
-  .upload-button:hover {
-    color: #818181;
-  }
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left 0.5s;
+  padding: 20px;
+}
+.upload-button {
+  background-color: #fed008;
+  width: 90%;
+  margin-left: 4%;
+  padding: 15px 20px;
+  border-radius: 35px;
+  font-size: 17px;
+}
+.upload-button:hover {
+  color: #818181;
+}
 
-  .upload-icon {
-    margin-top: -5px;
-    margin-right: 10px;
-  }
-  .profile-image {
-    max-width: none;
-    width: 30%;
-    margin-left: 35%;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-  }
-  .sidebar-content {
-    margin-top: 2rem;
-  }
-  hr {
-    background-color: #fed008;
-    margin: 0 5px;
-  }
-  .sidenav-bottom-card {
-    position: absolute;
-    bottom: 0px;
-    width: 250px;
-    height: 3rem;
-    margin: 0;
-    border-radius: 0;
-    background-image: linear-gradient(
-      to right top,
-      #343434,
-      #383838,
-      #3c3b3c,
-      #403f3f,
-      #444343
+.upload-icon {
+  margin-top: -5px;
+  margin-right: 10px;
+}
+.profile-image {
+  max-width: none;
+  width: 30%;
+  margin-left: 35%;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+.sidebar-content {
+  margin-top: 2rem;
+}
+hr {
+  background-color: #fed008;
+  margin: 0 5px;
+}
+.sidenav-bottom-card {
+  position: absolute;
+  bottom: 0px;
+  width: 250px;
+  height: 3rem;
+  margin: 0;
+  border-radius: 0;
+  background-image: linear-gradient(
+    to right top,
+    #343434,
+    #383838,
+    #3c3b3c,
+    #403f3f,
+    #444343
+  );
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#fileslbl {
+  border-top-left-radius: 0.47rem;
+  border-top-right-radius: 0.47rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20vh;
+  background-color: #a0a0a0;
+  color: white;
+  padding: 16px;
+  text-align: center;
+  transition: 0.5s;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+#filesfld {
+  display: none;
+}
+#progress {
+  width: 0;
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 25px;
+  padding: 0 5px;
+}
+@keyframes dropbox {
+  0% {
+    background-image: repeating-linear-gradient(
+      30deg,
+      green 1%,
+      green 3%,
+      darkgreen 5%,
+      darkgreen 5%
     );
   }
+  50% {
+    background-image: repeating-linear-gradient(
+      30deg,
+      darkgreen 1%,
+      darkgreen 3%,
+      green 5%,
+      green 5%
+    );
+  }
+  100% {
+    background-image: repeating-linear-gradient(
+      30deg,
+      green 1%,
+      green 3%,
+      darkgreen 5%,
+      darkgreen 5%
+    );
+  }
+}
+.modal-body {
+  padding: 0;
+}
+.modal-content {
+  border-radius: 0.5rem;
+}
+.modal-footer {
+  border-top: none;
+}
 
-  body {
-    padding: 0;
-    margin: 0;
-  }
-  
-  #fileslbl {
-    border-top-left-radius: 0.47rem;
-    border-top-right-radius: 0.47rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 20vh;
-    background-color: #a0a0a0;
-    color: white;
-    padding: 16px;
-    text-align: center;
-    transition: 0.5s;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-  }
-  #filesfld {
-    display: none;
-  }
-  #progress {
-    width: 0;
-    background-color: blue;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 25px;
-    padding: 0 5px;
-  }
-  @keyframes dropbox {
-    0% {
-      background-image: repeating-linear-gradient(
-        30deg,
-        green 1%,
-        green 3%,
-        darkgreen 5%,
-        darkgreen 5%
-      );
-    }
-    50% {
-      background-image: repeating-linear-gradient(
-        30deg,
-        darkgreen 1%,
-        darkgreen 3%,
-        green 5%,
-        green 5%
-      );
-    }
-    100% {
-      background-image: repeating-linear-gradient(
-        30deg,
-        green 1%,
-        green 3%,
-        darkgreen 5%,
-        darkgreen 5%
-      );
-    }
-  }
-  .modal-body{    
-    padding: 0;
-  }
-  .modal-content{
-    border-radius: 0.5rem;
-  }
-  .modal-footer{
-    border-top: none;
-  }
+.notification {
+  position: absolute;
+  width: 85%;
+}
+.notification-row {
+  margin-left: 0;
+  padding: 15px;
+}
+.notification-close-icon {
+  position: absolute;
+  right: 15px;
+}
 
-  @media screen and (max-height: 450px) {
-    .sidenav {
-      padding-top: 15px;
-    }
-    .sidenav a {
-      font-size: 18px;
-    }
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
   }
+  .sidenav a {
+    font-size: 18px;
+  }
+}

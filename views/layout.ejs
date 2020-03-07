@@ -27,7 +27,6 @@
         }
         
       }
-
       
       function closeNav() {
           document.getElementById("mySidenav").style.width = "0";
@@ -44,12 +43,9 @@
         $("#uploadModal").modal('show')
       })
 
-      function imageUpload(){
-     
-        
-      }
-
-      imageUpload()
+      $(".notification-close-icon").click(function(){
+        $(".notification").fadeOut(200)
+      })
       openNav()
 
 

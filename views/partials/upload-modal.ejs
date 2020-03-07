@@ -21,7 +21,12 @@
     submitFilesForm(document.getElementById("filesfrm"));
   }
   function submitFilesForm(form) {
-    $("#uploadModal").modal("dismiss")
+    
+    $("#uploadModal").modal("hide")
+    if (form.filesfld.files.length === 0){
+      showWarning()
+      return false
+    }
     var label = document.getElementById("fileslbl");
     dragOver(label, "Uploading images..."); // set the drop zone text and styling
     var fd = new FormData();
@@ -32,6 +37,7 @@
     var progress = document.getElementById("progress");
     var x = new XMLHttpRequest();
     if (x.upload) {
+      $(".progress").show()
       x.upload.addEventListener("progress", function(event) {
         var percentage = parseInt((event.loaded / event.total) * 100);
         progress.innerText = progress.style.width = percentage + "%";
@@ -44,7 +50,8 @@
         dragLeave(label); // this will reset the text and styling of the drop zone
         if (x.status == 200) {
           console.log(x.responseText);
-          
+          $(".progress").fadeOut(800);
+          showSuccess()
           // var images = JSON.parse(x.responseText);
           // for(var i = 0; i < images.length; i++) {
           //     var img = document.createElement("img");
@@ -53,13 +60,34 @@
           // }
         } else {
           // failed - TODO: Add code to handle server errors
+          showError()
         }
       }
     };
     x.open("post", form.action, true);
     x.send(fd);
+
+    
     return false;
   }
+  function showSuccess(){
+      $(".notification").show()
+      $(".notification-content").text("Images uploaded successfully");
+      $("#notification-card").css({"background-color":"#d4ffd1"})
+      $(".notification").fadeOut(4000)
+    }
+    function showError(){
+      $(".notification").show()
+      $("#notification-card").css({"background-color":"#f5aeab"})
+      $(".notification-content").text("Couldnot upload image. Please try again later");
+      $(".notification").fadeOut(4000)
+    }
+    function showWarning(){
+      $(".notification").show()
+      $("#notification-card").css({"background-color":"#fffbab"})
+      $(".notification-content").text("No file selected");
+      $(".notification").fadeOut(4000)
+    }
 </script>
 <div class="modal fade" id="uploadModal">
   <div class="modal-dialog modal-dialog-centered">
