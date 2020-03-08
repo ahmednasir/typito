@@ -1,12 +1,93 @@
-<%- include('partials/notification')%>
+<%- include('partials/notification')%> <%- include('partials/sidenav')%> <%-
+include('partials/upload-modal')%>
 
-<%- include('partials/sidenav')%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css"
+/>
 
-<%- include('partials/upload-modal')%>
+<style>
+  .row {
+    margin: 15px;
+  }
+  .image-card {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    display: block;
+    margin: 1rem 0.3rem;
+  }
+  .image-a {
+    padding: 0;
+  }
+  .images:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
 
-<div class="footer">
-    <div class="progress">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress"></div>
-    </div>
+    -webkit-box-shadow: 0px 0px 8px 0px black;
+    -moz-box-shadow: 0px 0px 8px 0px black;
+    box-shadow: 0px 0px 8px 0px black;
+  }
+</style>
+
+<div class="container image-container">
+  
+  <script>
+    $(document).on("click", '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox();
+      $(".ekko-lightbox-container").append("<h1>Lol</h1>")
+    });
+  </script>
+</div>
+<div class="no-image-container">
+  <img
+    src="images/no-image.jpg"
+    style="
+    max-width: none;
+    width: 40%;
+    margin-left: 30%;
+    margin-top: 10%;
+"
+  />
 </div>
 
+<div class="footer">
+  <div class="progress">
+    <div
+      class="progress-bar progress-bar-striped progress-bar-animated"
+      id="progress"
+      style="height: 1rem"
+    ></div>
+  </div>
+</div>
+<script>
+  let imageArr = JSON.parse(`<%- data.Images%>`);
+
+  for (let file in imageArr) {
+    let displayText = file + " (" + imageArr[file].length + ")";
+    let outerDiv =
+      '<div class="card date-row">' +
+      displayText +
+      '</div><div class="row image-row"></div>';
+    $(".image-container").append(outerDiv);
+    for (let i = 0; i < imageArr[file].length; i++) {
+      let ele =
+        '<div class="col-md-3"><div class="image-card"><a href="' +
+        imageArr[file][i].file1 +
+        '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
+        imageArr[file][i].file3 +
+        '"class="img-fluid rounded images"/></a></div></div>';
+      $(".image-row").append(ele);
+    }
+  }
+  if (imageArr.length == 0) {
+    $(".image-container").hide();
+  } else {
+    $(".no-image-container").hide();
+  }
+</script>

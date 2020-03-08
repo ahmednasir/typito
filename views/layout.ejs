@@ -4,6 +4,10 @@
   
 <!-- Wrapper -->
 <div id="main">
+<button class="btn btn-default menu-btn">
+  <img src="images/menu_open.svg" alt="">
+</button>
+
 <%- body %>
 <!-- body end -->
 
@@ -19,18 +23,24 @@
 
 <script>
   $(function(){
-
+      let menuBtn =  $(".menu-btn");
+      let overlayFlag = false;
       function openNav() {
         if(document.getElementById("mySidenav")){
           document.getElementById("mySidenav").style.width = "250px";
-          document.getElementById("main").style.marginLeft = "250px";
+          if(!overlayFlag){
+            document.getElementById("main").style.marginLeft = "250px";
+          }
         }
-        
+        menuBtn.hide() 
       }
-      
       function closeNav() {
+        
           document.getElementById("mySidenav").style.width = "0";
-          document.getElementById("main").style.marginLeft = "0";
+          if(!overlayFlag){
+            document.getElementById("main").style.marginLeft = "0";
+          }
+          menuBtn.show()
         }
       $("#openNav").click(function(){
         openNav()
@@ -46,9 +56,26 @@
       $(".notification-close-icon").click(function(){
         $(".notification").fadeOut(200)
       })
-      openNav()
-
-
+      $(window).resize(function(){
+        sideNavManip()
+      });
+      function sideNavManip(){
+        let width = $(window).width()
+        if(width>=1440){
+          overlayFlag = false
+          menuBtn.hide()
+          openNav()
+        }
+        if(width <=1200){
+          menuBtn.show()
+          overlayFlag = true
+          closeNav()
+        }
+      }
+      sideNavManip()
+      $(".menu-btn").click(function(){
+        openNav()
+      })
   })
     
 
