@@ -6,6 +6,7 @@ var imageController = require('../controllers/GetImageController');
 
 router.get('/',function(req, res){
    imageController("first").then(result=>{
+    
        res.render('home',
        {
            data: {

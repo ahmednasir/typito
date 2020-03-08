@@ -35,12 +35,11 @@ include('partials/upload-modal')%>
 </style>
 
 <div class="container image-container">
-  
   <script>
     $(document).on("click", '[data-toggle="lightbox"]', function(event) {
       event.preventDefault();
       $(this).ekkoLightbox();
-      $(".ekko-lightbox-container").append("<h1>Lol</h1>")
+      $(".ekko-lightbox-container").append("<h1>Lol</h1>");
     });
   </script>
 </div>
@@ -67,27 +66,32 @@ include('partials/upload-modal')%>
 </div>
 <script>
   let imageArr = JSON.parse(`<%- data.Images%>`);
-
-  for (let file in imageArr) {
-    let displayText = file + " (" + imageArr[file].length + ")";
-    let outerDiv =
-      '<div class="card date-row">' +
-      displayText +
-      '</div><div class="row image-row"></div>';
-    $(".image-container").append(outerDiv);
-    for (let i = 0; i < imageArr[file].length; i++) {
-      let ele =
-        '<div class="col-md-3"><div class="image-card"><a href="' +
-        imageArr[file][i].file1 +
-        '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
-        imageArr[file][i].file3 +
-        '"class="img-fluid rounded images"/></a></div></div>';
-      $(".image-row").append(ele);
+  if (imageArr) {
+    console.log(imageArr)
+    for (let file in imageArr) {
+      debugger
+      let displayText = file + " (" + imageArr[file].length + ")";
+      let outerDiv =
+        '<div class="card date-row">' +
+        displayText +
+        '</div><div class="row image-row '+file+'"></div>';
+      $(".image-container").append(outerDiv);
+      for (let i = 0; i < imageArr[file].length; i++) {
+        let ele =
+          '<div class="col-md-3"><div class="image-card"><a href="' +
+          imageArr[file][i].file1 +
+          '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
+          imageArr[file][i].file3 +
+          '"class="img-fluid rounded images"/></a></div></div>';
+        $("."+file).append(ele);
+      }
     }
-  }
-  if (imageArr.length == 0) {
-    $(".image-container").hide();
-  } else {
-    $(".no-image-container").hide();
+    if (imageArr.length == 0) {
+      $(".image-container").hide();
+    } else {
+      $(".no-image-container").hide();
+    }
+  }else{
+    $(".no-image-container").show();
   }
 </script>

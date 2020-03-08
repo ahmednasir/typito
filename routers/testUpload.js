@@ -43,8 +43,7 @@ router.post("/", function(request, response) {
             setTimeout(function() {
               response.status(400).json([]);
             }, 1000);
-          }
-          else{
+          } else {
             let obj = new model({
               filename: fileNames
             });
@@ -60,9 +59,15 @@ router.post("/", function(request, response) {
         });
       }
     }
-    setTimeout(()=>{
-      response.status(200).send(images)
-    },3000)
+    let d = new Date();
+    d = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+    let resp = {
+      d : images
+    }
+    setTimeout(() => {
+      console.log(resp)
+      response.status(200).send(resp);
+    }, 3000);
   }
 });
 
