@@ -1,3 +1,4 @@
+<script src="js/fileuploader.js"></script>
 <script>
   function stopDefault(event) {
     event.preventDefault();
@@ -8,94 +9,25 @@
     label.innerText = text;
   }
   function dragLeave(label) {
-    debugger
+    debugger;
     var len = label.style.length;
     for (var i = 0; i < len; i++) {
       label.style[label.style[i]] = "";
     }
     label.innerText = "Click to choose images or drag-n-drop them here";
-
   }
   function addFilesAndSubmit(event) {
-    debugger
+    debugger;
     var files = event.target.files || event.dataTransfer.files;
     document.getElementById("filesfld").files = files;
-    submitFilesForm(document.getElementById("filesfrm"));
-
+    
   }
   function submitFilesForm(form) {
-    $("#uploadModal").modal("hide");
-    if (form.filesfld.files.length === 0) {
-      showWarning();
-      return false;
-    }
-    var label = document.getElementById("fileslbl");
-    dragOver(label, "Uploading images..."); // set the drop zone text and styling
-    var fd = new FormData();
-    for (var i = 0; i < form.filesfld.files.length; i++) {
-      var field = form.filesfld;
-      fd.append(field.name, field.files[i], field.files[i].name);
-    }
-    var progress = document.getElementById("progress");
-    var x = new XMLHttpRequest();
-    if (x.upload) {
-      $(".progress").show();
-      x.upload.addEventListener("progress", function(event) {
-        var percentage = parseInt((event.loaded / event.total) * 100);
-        progress.innerText = progress.style.width = percentage + "%";
-      });
-    }
-    x.onreadystatechange = function() {
-      if (x.readyState == 4) {
-
-        progress.innerText = progress.style.width = "";
-        form.filesfld.value = "";
-        dragLeave(label); // this will reset the text and styling of the drop zone
-        if (x.status == 200) {
-
-          let imageArr = JSON.parse(x.responseText);
-          console.log(imageArr)
-          debugger
-          $(".progress").fadeOut(800);
-          showSuccess();
-          for (let file in imageArr) {
-            debugger
-            let displayText = file + " (" + imageArr[file].length + ")";
-            let dateRow = document.getElementById(file);
-            if(!dateRow){
-              let outerDiv =
-                      '<div class="card date-row" id="'+file+'">' +
-                      displayText +
-                      '</div><div class="row image-row"></div>';
-              $(".image-container").append(outerDiv);
-            }else {
-              let text = parseInt(dateRow.innerText.replace("(","").replace(")","").split(" ")[1]);
-              text = file+ " (" + (imageArr[file].length+text).toString() + ")"
-              $("#"+file).text(text)
-            }
-
-            for (let i = 0; i < imageArr[file].length; i++) {
-              let ele =
-                '<div class="col-md-3"><div class="image-card"><a href="' +
-                imageArr[file][i].file1.replace('uploads/','') +
-                '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
-                imageArr[file][i].file3.replace('uploads/','') +
-                '"class="img-fluid rounded images"/></a></div></div>';
-              $(".image-row").append(ele);
-            }
-          }
-        } else {
-          // failed -
-          showError();
-        }
-      }
-    };
-    x.open("post", form.action, true);
-    x.send(fd);
-
+   
     return false;
   }
   function showSuccess() {
+    $(".no-image-container").hide();
     $(".notification").show();
     $(".notification-content").text("Images uploaded successfully");
     $("#notification-card").css({ "background-color": "#d4ffd1" });
@@ -117,13 +49,111 @@
   }
 
   function fileSelected(e) {
-    let files = document.getElementById("filesfld").files
-    let names = '';
-    for(let file of files){
-      names += file.name + " "
+    let files = document.getElementById("filesfld").files;
+    let names = "";
+    for (let file of files) {
+      names += file.name + " ";
     }
-    $(".filename-card").text(names)
+    $(".filename-card").text(names);
   }
+  $(document).ready(function() {
+    $(".upload-btn").click(function(event) {
+      
+      //stop submit the form, we will post it manually.
+      event.preventDefault();
+
+      // Get form
+      var form = $("#filesfrm")[0];
+      $("#uploadModal").modal("hide");
+      if (form.filesfld.files.length === 0) {
+        showWarning();
+        return false;
+      }
+      var label = document.getElementById("fileslbl");
+      dragOver(label, "Uploading images..."); // set the drop zone text and styling
+      // Create an FormData object
+      var data = new FormData(form);
+
+      // If you want to add an extra field for the FormData
+      data.append("CustomField", "This is some extra data, testing");
+
+      // disabled the submit button
+      $(".upload-btn").prop("disabled", true);
+
+      $.ajax({
+        type: "POST",
+        enctype: "multipart/form-data",
+        url: "/testUp",
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        xhr: function() {
+          var xhr = new window.XMLHttpRequest();
+          xhr.upload.addEventListener(
+            "progress",
+            function(evt) {
+              if (evt.lengthComputable) {
+                var percentComplete = evt.loaded / evt.total;
+                percentComplete = parseInt(percentComplete * 100);
+                $(".progress").show();
+                if (percentComplete < 90) {
+                  $("#progress").text(percentComplete + "%");
+                  $("#progress").css("width", percentComplete + "%");
+                }
+              }
+            },
+            false
+          );
+          return xhr;
+        },
+        success: function(data) {
+          let imageArr = data;
+          $("#progress").text(100 + "%");
+          $("#progress").css("width", 100 + "%");
+          $(".progress").fadeOut(800);
+          showSuccess();
+          for (let file in imageArr) {
+            let displayText = file + " (" + imageArr[file].length + ")";
+            let dateRow = document.getElementById(file);
+            if (!dateRow) {
+              let outerDiv =
+                '<div class="card date-row" id="' +
+                file +
+                '">' +
+                displayText +
+                '</div><div class="row image-row"></div>';
+              $(".image-container").append(outerDiv);
+            } else {
+              let text = parseInt(
+                dateRow.innerText
+                  .replace("(", "")
+                  .replace(")", "")
+                  .split(" ")[1]
+              );
+              text =
+                file + " (" + (imageArr[file].length + text).toString() + ")";
+              $("#" + file).text(text);
+            }
+
+            for (let i = 0; i < imageArr[file].length; i++) {
+              let ele =
+                '<div class="col-md-3"><div class="image-card"><a href="' +
+                imageArr[file][i].file1.replace("uploads/", "") +
+                '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
+                imageArr[file][i].file3.replace("uploads/", "") +
+                '"class="img-fluid rounded images"/></a></div></div>';
+              $(".image-row").append(ele);
+            }
+          }
+        },
+        error: function(e) {
+          showError();
+        }
+      });
+    });
+  });
 </script>
 <div class="modal fade" id="uploadModal">
   <div class="modal-dialog modal-dialog-centered">
@@ -136,7 +166,6 @@
       </div> -->
       <form
         id="filesfrm"
-        action="/testUp"
         method="post"
         onsubmit="return submitFilesForm(this);"
       >
@@ -158,17 +187,12 @@
             ondrop="stopDefault(event);dragLeave(this);"
             >Click to choose images or drag-n-drop them here</label
           >
-          <div class="card filename-card">
-
-          </div>
+          <div class="card filename-card"></div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              onclick="submitFilesForm(this.form)"
-            >
+            <button type="button" class="btn btn-secondary upload-btn">
               Upload
             </button>
+            
           </div>
         </div>
       </form>

@@ -8,7 +8,7 @@ var controller = require('../controllers/UploadController').UploadController;
 
 
 router.post("/", async function(request, response) {
-
+    console.log("test")
     if (request.files) {
             controller(request).then(images=>{
                 if(images && images.length >0){

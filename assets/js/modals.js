@@ -22,8 +22,8 @@
             type: null, //force the lightbox into image / youtube mode. if null, or not image|youtube|vimeo; detect it
             alwaysShowClose: false, //always show the close button, even if there is no title
             loadingMessage: '<div class="ekko-lightbox-loader"><div><div></div><div></div></div></div>', // http://tobiasahlin.com/spinkit/
-            leftArrow: '<span>&#10094;</span>',
-            rightArrow: '<span>&#10095;</span>',
+            leftArrow: '<span class="arrow">&#10094;</span>',
+            rightArrow: '<span class="arrow">&#10095;</span>',
             strings: {
                 close: 'Close',
                 fail: 'Failed to load image:',
@@ -124,7 +124,7 @@
     
                     // add the directional arrows to the modal
                     if (this._config.showArrows && this._$galleryItems.length > 1) {
-                        this._$lightboxContainer.append('<div class="ekko-lightbox-nav-overlay"><a href="#">' + this._config.leftArrow + '</a><a href="#">' + this._config.rightArrow + '</a></div>');
+                        this._$lightboxContainer.append('<div class="ekko-lightbox-nav-overlay"><a href="#" class="arrow">' + this._config.leftArrow + '</a><a href="#" class="arrow">' + this._config.rightArrow + '</a></div>');
                         this._$modalArrows = this._$lightboxContainer.find('div.ekko-lightbox-nav-overlay').first();
                         this._$lightboxContainer.on('click', 'a:first-child', function (event) {
                             event.preventDefault();
@@ -188,7 +188,7 @@
             }, {
                 key: 'navigateLeft',
                 value: function navigateLeft() {
-    
+                    debugger
                     if (!this._$galleryItems) return;
     
                     if (this._$galleryItems.length === 1) return;
@@ -542,10 +542,22 @@
                                 if (loadingTimeout) clearTimeout(loadingTimeout);
                                 loadingTimeout = null;
                                 var image = $('<img />');
+                                
                                 image.attr('src', img.src);
                                 image.addClass('img-fluid');
-    
-                                // backward compatibility for bootstrap v3
+                                image.addClass('img-fluid-modal');
+                                let src = img.src.split("/")
+                                src = src[3].split("_")
+                                $(".image-modal-footer").text("")
+                                $(".modal-footer").css({ display: "block" });
+                                $(".image-modal-footer").append(
+                                    '<div class="row footer-row-modal"><div class="col-md-6 image-caption-col">' +
+                                    src[1].replace("%", " ") +
+                                    '</div><div class="col-md-6 image-caption-col">' +
+                                    new Date(parseInt(src[0])).toDateString() +
+                                    "</div></div>"
+                                );
+    //                             // backward compatibility for bootstrap v3
                                 image.css('width', '100%');
     
                                 $containerForImage.html(image);

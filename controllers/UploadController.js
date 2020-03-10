@@ -20,9 +20,9 @@ module.exports.UploadController = async function (request) {
                 ) {
                     let date = new Date().getTime().toString();
                     let fileNames = {
-                        file1: "uploads/" + date + file.name,
-                        file2: "uploads/240/" + date + file.name,
-                        file3: "uploads/720/" + date + file.name,
+                        file1: "uploads/" + date +"_"+ file.name,
+                        file2: "uploads/240/" + date +"_"+ file.name,
+                        file3: "uploads/720/" + date +"_"+ file.name,
                         name: file.name,
                         timestamp: new Date().toISOString()
                     };

@@ -67,23 +67,13 @@ include('partials/upload-modal')%>
 <script>
   $(document).ready(function() {
     let imageArr = JSON.parse(`<%- data.Images%>`);
+    let dateClicked = ''
     $(document).on("click", '[data-toggle="lightbox"]', function(event) {
       event.preventDefault();
       $(this).ekkoLightbox();
 
-      let className = $(this).attr('class').split(" ")[2].replace("_class","")
-      
-      let timeStamp = imageLookup($(this).attr("href"), className)
-      $(".modal-footer").css({ display: "block" });
-      $(".image-modal-footer").append(
-        '<div class="row"><div class="col-md-6 image-caption-col">' +
-          timeStamp[1] +
-          '</div><div class="col-md-6 image-caption-col">' +
-          timeStamp[0] +
-          "</div></div>"
-      );
     });
-
+    
     if (Object.keys(imageArr).length > 0) {
       for (let file in imageArr) {
         let displayText = file + " (" + imageArr[file].length + ")";
@@ -112,16 +102,6 @@ include('partials/upload-modal')%>
     } else {
       $(".no-image-container").show();
     }
-    function imageLookup(url, className){
-
-      let found = ["", ""]
-      imageArr[className].forEach(ele=>{
-        if(ele.file1 === url){
-          found = [new Date(ele.timestamp).toDateString(), ele.name]
-        }
-      })
-      return found
-      
-    }
+    
   });
 </script>
