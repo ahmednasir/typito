@@ -33,11 +33,14 @@
     $("#notification-card").css({ "background-color": "#d4ffd1" });
     $(".notification").fadeOut(4000);
   }
-  function showError() {
+  function showError(message) {
+    if(!message){
+      message = "Couldnot upload image. Please try again later"
+    }
     $(".notification").show();
     $("#notification-card").css({ "background-color": "#f5aeab" });
     $(".notification-content").text(
-      "Couldnot upload image. Please try again later"
+      message
     );
     $(".notification").fadeOut(4000);
   }
@@ -143,7 +146,16 @@
           }
         },
         error: function(e) {
-          showError();
+          $(".progress").hide()
+          if(e.status === 400){
+            showError("Shorter side of image should be atleast 500px")
+          }else if(e.status === 401) {
+            showError("Images should be in either in JPEG , JPG or PNG format");
+          }
+          else{
+            showError("")
+          }
+          
         }
       });
     });

@@ -36,9 +36,6 @@ app.use(express.static(path.join(__dirname, 'uploads')))
 
 app.use('/', require('./routers/index'))
 app.use('/home', require('./routers/home'));
-app.use('/upload', require('./routers/upload'));
-app.use('/test', require('./routers/testUpload'))
-app.use('/testUp', require('./routers/testUp'))
 
 
 

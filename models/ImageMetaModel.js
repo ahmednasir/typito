@@ -25,4 +25,4 @@ var imageMeta = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("ImageMetaData", imageMeta, "ImageMetaData");
+module.exports = mongoose.model("ImageMetaData", imageMeta, "ImageMetaDataV2");
