@@ -11,15 +11,17 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: function(req, file, cb) {
+    console.log("hjbhjbjh")
     let date = new Date().getTime().toString();
     let fileName = date + file.originalname;
     let obj = new model({
       filename: fileName
     });
-    obj.save(function(err, _) {
-      if (err) cb(null, false);
-      cb(null, fileName);
-    });
+    cb(null, fileName);
+    // obj.save(function(err, _) {
+    //   if (err) cb(null, false);
+    //   cb(null, fileName);
+    // });
   }
 });
 
@@ -43,14 +45,8 @@ const upload = multer({
   fileFilter: fileFilter
 }).array("productImage", config.MAX_UPLOAD_LIMIT);
 
-router.post("/", async function(req, res) {
-    upload(req, res, function(err){
-        if(err){
-            res.status(500).send(err)
-        }else{
-            res.send("Upload success")
-        }
-    });
+router.post("/",upload,  function(req, res) {
+    
 });
 
 router.get("/", function(req, res) {

@@ -1,4 +1,4 @@
-<script src="js/fileuploader.js"></script>
+
 <script>
   function stopDefault(event) {
     event.preventDefault();
@@ -61,7 +61,7 @@
       
       //stop submit the form, we will post it manually.
       event.preventDefault();
-
+      debugger
       // Get form
       var form = $("#filesfrm")[0];
       $("#uploadModal").modal("hide");
@@ -69,21 +69,14 @@
         showWarning();
         return false;
       }
-      var label = document.getElementById("fileslbl");
-      dragOver(label, "Uploading images..."); // set the drop zone text and styling
-      // Create an FormData object
+      
       var data = new FormData(form);
 
-      // If you want to add an extra field for the FormData
-      data.append("CustomField", "This is some extra data, testing");
-
-      // disabled the submit button
-      $(".upload-btn").prop("disabled", true);
 
       $.ajax({
         type: "POST",
         enctype: "multipart/form-data",
-        url: "/testUp",
+        url: "http://localhost:5000/upload",
         data: data,
         processData: false,
         contentType: false,
@@ -109,6 +102,7 @@
           return xhr;
         },
         success: function(data) {
+          console.log(data)
           let imageArr = data;
           $("#progress").text(100 + "%");
           $("#progress").css("width", 100 + "%");
