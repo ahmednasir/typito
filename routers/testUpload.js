@@ -34,7 +34,8 @@ router.post("/", function(request, response) {
         let fileNames = {
           file1: "uploads/" + date + file.name,
           file2: "uploads/240/" + date + file.name,
-          file3: "uploads/720/" + date + file.name
+          file3: "uploads/720/" + date + file.name,
+          name: file.name
         };
 
         images[i] = fileNames;

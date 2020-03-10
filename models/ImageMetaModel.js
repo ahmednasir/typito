@@ -17,6 +17,10 @@ var imageMeta = mongoose.Schema({
     file3: {
       type: String,
       require: true
+    },
+    name: {
+      type: String,
+      require: true
     }
   }
 });

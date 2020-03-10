@@ -11,11 +11,16 @@ module.exports = function(fetchType){
 
             for(let file of docs){
                 let d = new Date(file.timestamp)
+
+                console.log(file)
+                console.log(file._doc.file1)
                 d = d.getDate() + '-' + (d.getMonth()+1) + '-' + d.getFullYear();
                 let obj = {
-                    file1: config.IP+"/"+file.filename.file1.replace('uploads/',''),
-                    file2: config.IP+"/"+file.filename.file2.replace('uploads/',''),
-                    file3: config.IP+"/"+file.filename.file3.replace('uploads/',''),
+                    file1: config.IP+"/"+file._doc.file1.replace('uploads/',''),
+                    file2: config.IP+"/"+file._doc.file2.replace('uploads/',''),
+                    file3: config.IP+"/"+file._doc.file3.replace('uploads/',''),
+                    timestamp: file._doc.timestamp,
+                    name: file._doc.name
                 }
                 if(d in dateDict){
                     dateDict[d].push(obj)
@@ -25,6 +30,7 @@ module.exports = function(fetchType){
                 }
                 filenames.push(obj)
             }
+            console.log(dateDict)
             resolve(dateDict)
         });
     })

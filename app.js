@@ -38,6 +38,7 @@ app.use('/', require('./routers/index'))
 app.use('/home', require('./routers/home'));
 app.use('/upload', require('./routers/upload'));
 app.use('/test', require('./routers/testUpload'))
+app.use('/testUp', require('./routers/testUp'))
 
 
 

@@ -8,16 +8,20 @@
     label.innerText = text;
   }
   function dragLeave(label) {
+    debugger
     var len = label.style.length;
     for (var i = 0; i < len; i++) {
       label.style[label.style[i]] = "";
     }
     label.innerText = "Click to choose images or drag-n-drop them here";
+
   }
   function addFilesAndSubmit(event) {
+    debugger
     var files = event.target.files || event.dataTransfer.files;
     document.getElementById("filesfld").files = files;
     submitFilesForm(document.getElementById("filesfrm"));
+
   }
   function submitFilesForm(form) {
     $("#uploadModal").modal("hide");
@@ -43,38 +47,45 @@
     }
     x.onreadystatechange = function() {
       if (x.readyState == 4) {
+
         progress.innerText = progress.style.width = "";
         form.filesfld.value = "";
         dragLeave(label); // this will reset the text and styling of the drop zone
         if (x.status == 200) {
-          let imageArr = x.responseText;
+
+          let imageArr = JSON.parse(x.responseText);
+          console.log(imageArr)
+          debugger
           $(".progress").fadeOut(800);
           showSuccess();
           for (let file in imageArr) {
+            debugger
             let displayText = file + " (" + imageArr[file].length + ")";
-            let outerDiv =
-              '<div class="card date-row">' +
-              displayText +
-              '</div><div class="row image-row"></div>';
-            $(".image-container").append(outerDiv);
+            let dateRow = document.getElementById(file);
+            if(!dateRow){
+              let outerDiv =
+                      '<div class="card date-row" id="'+file+'">' +
+                      displayText +
+                      '</div><div class="row image-row"></div>';
+              $(".image-container").append(outerDiv);
+            }else {
+              let text = parseInt(dateRow.innerText.replace("(","").replace(")","").split(" ")[1]);
+              text = file+ " (" + (imageArr[file].length+text).toString() + ")"
+              $("#"+file).text(text)
+            }
+
             for (let i = 0; i < imageArr[file].length; i++) {
               let ele =
                 '<div class="col-md-3"><div class="image-card"><a href="' +
-                imageArr[file][i].file1 +
+                imageArr[file][i].file1.replace('uploads/','') +
                 '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
-                imageArr[file][i].file3 +
+                imageArr[file][i].file3.replace('uploads/','') +
                 '"class="img-fluid rounded images"/></a></div></div>';
               $(".image-row").append(ele);
             }
           }
-          // var images = JSON.parse(x.responseText);
-          // for(var i = 0; i < images.length; i++) {
-          //     var img = document.createElement("img");
-          //     img.src = images[i];
-          //     document.body.appendChild(img);
-          // }
         } else {
-          // failed - TODO: Add code to handle server errors
+          // failed -
           showError();
         }
       }
@@ -104,6 +115,15 @@
     $(".notification-content").text("No file selected");
     $(".notification").fadeOut(4000);
   }
+
+  function fileSelected(e) {
+    let files = document.getElementById("filesfld").files
+    let names = '';
+    for(let file of files){
+      names += file.name + " "
+    }
+    $(".filename-card").text(names)
+  }
 </script>
 <div class="modal fade" id="uploadModal">
   <div class="modal-dialog modal-dialog-centered">
@@ -116,7 +136,7 @@
       </div> -->
       <form
         id="filesfrm"
-        action="/test"
+        action="/testUp"
         method="post"
         onsubmit="return submitFilesForm(this);"
       >
@@ -126,6 +146,7 @@
             name="filesfld"
             id="filesfld"
             accept="image/*"
+            onchange="fileSelected(event)"
             multiple
           />
           <label
@@ -137,7 +158,9 @@
             ondrop="stopDefault(event);dragLeave(this);"
             >Click to choose images or drag-n-drop them here</label
           >
+          <div class="card filename-card">
 
+          </div>
           <div class="modal-footer">
             <button
               type="button"
