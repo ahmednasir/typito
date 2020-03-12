@@ -546,15 +546,17 @@
                                 image.attr('src', img.src);
                                 image.addClass('img-fluid');
                                 image.addClass('img-fluid-modal');
-                                let src = img.src.split("/")
-                                src = src[3].split("_")
+                                let src = img.src
+                                src = src.split("___")[1].split("__")
+                                let date = src[0].replace("date","")
+                                let name = src[1].replace("name","")
                                 $(".image-modal-footer").text("")
                                 $(".modal-footer").css({ display: "block" });
                                 $(".image-modal-footer").append(
                                     '<div class="row footer-row-modal"><div class="col-md-6 image-caption-col">' +
-                                    src[1].replace("%", " ") +
+                                    name +
                                     '</div><div class="col-md-6 image-caption-col">' +
-                                    new Date(parseInt(src[0])).toDateString() +
+                                    new Date(date).toDateString() +
                                     "</div></div>"
                                 );
     //                             // backward compatibility for bootstrap v3

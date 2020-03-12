@@ -48,7 +48,9 @@ include('partials/upload-modal')%>
 "
   />
 </div>
-
+<div class="bottom-loader">
+  <img src="images/loader.svg" class="bottom-loader-image">
+</div>
 <div class="footer" style="
     position: fixed;
     bottom: 23px;
@@ -76,6 +78,7 @@ include('partials/upload-modal')%>
     
     if (Object.keys(imageArr).length > 0) {
       for (let file in imageArr) {
+        
         let displayText = file + " (" + imageArr[file].length + ")";
         let outerDiv =
           '<div class="card date-row" id="'+file+'">' +
@@ -102,6 +105,8 @@ include('partials/upload-modal')%>
     } else {
       $(".no-image-container").show();
     }
+   
+
     
   });
 </script>
