@@ -1,216 +1,217 @@
 <script>
-  function stopDefault(event) {
-    // debugger
-    event.preventDefault();
-    event.stopPropagation();
-  }
-  function dragOver(label, text) {
-    // debugger
-    label.style.animationName = "dropbox";
-    label.innerText = text;
-  }
-  function dragLeave(label) {
-    var len = label.style.length;
-    for (var i = 0; i < len; i++) {
-      label.style[label.style[i]] = "";
-    }
-    label.innerText = "Click to choose images or drag-n-drop them here";
-  }
-  function addFilesAndSubmit(event) {
-    debugger;
-    var files = event.target.files || event.dataTransfer.files;
-    document.getElementById("filesfld").files = files;
-    fileSelected(event)
-  }
-  function submitFilesForm(form) {
-    return false;
-  }
-  function showSuccess() {
-    $(".no-image-container").hide();
-    $(".notification").show();
-    $(".notification-content").text("Images uploaded successfully");
-    $("#notification-card").css({ "background-color": "#d4ffd1" });
-    $(".notification").fadeOut(4000);
-  }
-  function showError(message) {
-    if (!message) {
-      message = "Couldnot upload image. Please try again later";
-    }
-    $(".notification").show();
-    $("#notification-card").css({ "background-color": "#f5aeab" });
-    $(".notification-content").text(message);
-    $(".notification").fadeOut(4000);
-  }
-  function showWarning() {
-    $(".notification").show();
-    $("#notification-card").css({ "background-color": "#fffbab" });
-    $(".notification-content").text("No file selected");
-    $(".notification").fadeOut(4000);
-  }
+  // function stopDefault(event) {
+  //   // debugger
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  // }
+  // function dragOver(label, text) {
+  //   // debugger
+  //   label.style.animationName = "dropbox";
+  //   label.innerText = text;
+  // }
+  // function dragLeave(label) {
+  //   var len = label.style.length;
+  //   for (var i = 0; i < len; i++) {
+  //     label.style[label.style[i]] = "";
+  //   }
+  //   label.innerText = "Click to choose images or drag-n-drop them here";
+  // }
+  // function addFilesAndSubmit(event) {
+  //   debugger;
+  //   var files = event.target.files || event.dataTransfer.files;
+  //   document.getElementById("filesfld").files = files;
+  //   fileSelected(event)
+  // }
+  // function submitFilesForm(form) {
+  //   return false;
+  // }
+  // function showSuccess() {
+  //   $(".no-image-container").hide();
+  //   $(".notification").show();
+  //   $(".notification-content").text("Images uploaded successfully");
+  //   $("#notification-card").css({ "background-color": "#d4ffd1" });
+  //   $(".notification").fadeOut(4000);
+  // }
+  // function showError(message) {
+  //   if (!message) {
+  //     message = "Couldnot upload image. Please try again later";
+  //   }
+  //   $(".notification").show();
+  //   $("#notification-card").css({ "background-color": "#f5aeab" });
+  //   $(".notification-content").text(message);
+  //   $(".notification").fadeOut(4000);
+  // }
+  // function showWarning() {
+  //   $(".notification").show();
+  //   $("#notification-card").css({ "background-color": "#fffbab" });
+  //   $(".notification-content").text("No file selected");
+  //   $(".notification").fadeOut(4000);
+  // }
 
-  function fileSelected(e) {
-    let files = document.getElementById("filesfld").files;
-    let names = "";
-    for (let file of files) {
-      names += file.name + " ";
-    }
-    $(".filename-card").text(names);
-  }
-  function uploadImages() {
-    //stop submit the form, we will post it manually.
-    event.preventDefault();
+  // function fileSelected(e) {
+  //   let files = document.getElementById("filesfld").files;
+  //   let names = "";
+  //   for (let file of files) {
+  //     names += file.name + " ";
+  //   }
+  //   $(".filename-card").text(names);
+  // }
+  // function uploadImages() {
+  //   //stop submit the form, we will post it manually.
+  //   event.preventDefault();
     
-    // Get form
-    var form = $("#filesfrm")[0];
-    $("#uploadModal").modal("hide");
-    if (form.filesfld.files.length === 0) {
-      showWarning();
-      return false;
-    }
+  //   // Get form
+  //   var form = $("#filesfrm")[0];
+  //   $("#uploadModal").modal("hide");
+  //   if (form.filesfld.files.length === 0) {
+  //     showWarning();
+  //     return false;
+  //   }
 
-    var data = new FormData(form);
+  //   var data = new FormData(form);
     
-   $.ajax({
-      type: "POST",
-      enctype: "multipart/form-data",
-      url: "http://localhost:5000/upload",
-      data: data,
-      processData: false,
-      contentType: false,
-      cache: false,
-      timeout: 600000,
-      xhr: function() {
-        var xhr = new window.XMLHttpRequest();
-        xhr.upload.addEventListener(
-          "progress",
-          function(evt) {
-            if (evt.lengthComputable) {
-              var percentComplete = evt.loaded / evt.total;
-              percentComplete = parseInt(percentComplete * 100);
-              $(".progress").show();
-              if (percentComplete < 90) {
-                $("#progress").text(percentComplete + "%");
-                $("#progress").css("width", percentComplete + "%");
-              }
-            }
-          },
-          false
-        );
-        return xhr;
-      },
-      success: function(data) {
-        let imageArr = data;
-        $("#progress").text(100 + "%");
-        $("#progress").css("width", 100 + "%");
-        $(".progress").fadeOut(800);
-        showSuccess();
-        for (let file in imageArr) {
-          let displayText = file + " (" + imageArr[file].length + ")";
-          let dateRow = document.getElementById(file);
+  //  $.ajax({
+  //     type: "POST",
+  //     enctype: "multipart/form-data",
+  //     url: "http://localhost:5000/upload",
+  //     data: data,
+  //     processData: false,
+  //     contentType: false,
+  //     cache: false,
+  //     timeout: 600000,
+  //     xhr: function() {
+  //       var xhr = new window.XMLHttpRequest();
+  //       xhr.upload.addEventListener(
+  //         "progress",
+  //         function(evt) {
+  //           if (evt.lengthComputable) {
+  //             var percentComplete = evt.loaded / evt.total;
+  //             percentComplete = parseInt(percentComplete * 100);
+  //             $(".progress").show();
+  //             if (percentComplete < 90) {
+  //               $("#progress").text(percentComplete + "%");
+  //               $("#progress").css("width", percentComplete + "%");
+  //             }
+  //           }
+  //         },
+  //         false
+  //       );
+  //       return xhr;
+  //     },
+  //     success: function(data) {
+  //       let imageArr = data;
+  //       $("#progress").text(100 + "%");
+  //       $("#progress").css("width", 100 + "%");
+  //       $(".progress").fadeOut(800);
+  //       showSuccess();
+  //       for (let file in imageArr) {
+  //         let displayText = file + " (" + imageArr[file].length + ")";
+  //         let dateRow = document.getElementById(file);
 
-          if (!dateRow) {
-            let outerDiv =
-              '<div class="card date-row" id="' +
-              file +
-              '">' +
-              displayText +
-              '</div><div class="row image-row"></div>';
-            $(".image-container").append(outerDiv);
-          } else {
-            let text = parseInt(
-              dateRow.innerText
-                .replace("(", "")
-                .replace(")", "")
-                .split(" ")[1]
-            );
-            text =
-              file + " (" + (imageArr[file].length + text).toString() + ")";
-            $("#" + file).text(text);
-          }
+  //         if (!dateRow) {
+  //           let outerDiv =
+  //             '<div class="card date-row" id="' +
+  //             file +
+  //             '">' +
+  //             displayText +
+  //             '</div><div class="row image-row"></div>';
+  //           $(".image-container").append(outerDiv);
+  //         } else {
+  //           let text = parseInt(
+  //             dateRow.innerText
+  //               .replace("(", "")
+  //               .replace(")", "")
+  //               .split(" ")[1]
+  //           );
+  //           text =
+  //             file + " (" + (imageArr[file].length + text).toString() + ")";
+  //           $("#" + file).text(text);
+  //         }
 
-          for (let i = 0; i < imageArr[file].length; i++) {
-            let ele =
-              '<div class="col-md-3"><div class="image-card"><a href="' +
-              imageArr[file][i].file1.replace("uploads/", "") +
-              '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
-              imageArr[file][i].file3.replace("uploads/", "") +
-              '"class="img-fluid rounded images"/></a></div></div>';
-            $(".image-row").append(ele);
-          }
-        }
-      },
-      error: function(e) {
-        $(".progress").hide();
-        if (e.status === 400) {
-          showError("Shorter side of image should be atleast 500px");
-        } else if (e.status === 401) {
-          showError("Images should be in either in JPEG , JPG or PNG format");
-        } else {
-          showError("");
-        }
-      }
-    });
-  }
-  $(document).ready(function() {
-    $(".upload-btn").click(function(event) {
-      uploadImages()
-    });
+  //         for (let i = 0; i < imageArr[file].length; i++) {
+  //           let ele =
+  //             '<div class="col-md-3"><div class="image-card"><a href="' +
+  //             imageArr[file][i].file1.replace("uploads/", "") +
+  //             '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
+  //             imageArr[file][i].file3.replace("uploads/", "") +
+  //             '"class="img-fluid rounded images"/></a></div></div>';
+  //           $(".image-row").append(ele);
+  //         }
+  //       }
+  //     },
+  //     error: function(e) {
+  //       $(".progress").hide();
+  //       if (e.status === 400) {
+  //         showError("Shorter side of image should be atleast 500px");
+  //       } else if (e.status === 401) {
+  //         showError("Images should be in either in JPEG , JPG or PNG format");
+  //       } else {
+  //         showError("");
+  //       }
+  //     }
+  //   });
+  // }
+  // $(document).ready(function() {
+  //   $(".upload-btn").click(function(event) {
+  //     uploadImages()
+  //   });
 
-    /* $(window).scroll(function() {
-      if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-        // $(".bottom-loader").show()
+  //   $(window).scroll(function() {
+  //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+  //       // $(".bottom-loader").show()
 
-        $.ajax({
-          url: "/home/getImage",
-          method: "POST",
-          success: function(data) {
-            let imageArr = data;
-            // $("#progress").text(100 + "%");
-            // $("#progress").css("width", 100 + "%");
-            // $(".progress").fadeOut(800);
-            // showSuccess();
-            for (let file in imageArr) {
-              let displayText = file + " (" + imageArr[file].length + ")";
-              let dateRow = document.getElementById(file);
+  //       $.ajax({
+  //         url: "/home/getImage",
+  //         method: "POST",
+  //         success: function(data) {
+  //           console.log(data)
+  //           let imageArr = data;
+  //           // $("#progress").text(100 + "%");
+  //           // $("#progress").css("width", 100 + "%");
+  //           // $(".progress").fadeOut(800);
+  //           // showSuccess();
+  //           for (let file in imageArr) {
+  //             let displayText = file + " (" + imageArr[file].length + ")";
+  //             let dateRow = document.getElementById(file);
 
-              if (!dateRow) {
-                let outerDiv =
-                  '<div class="card date-row" id="' +
-                  file +
-                  '">' +
-                  displayText +
-                  '</div><div class="row image-row"></div>';
-                $(".image-container").append(outerDiv);
-              } else {
-                let text = parseInt(
-                  dateRow.innerText
-                    .replace("(", "")
-                    .replace(")", "")
-                    .split(" ")[1]
-                );
-                text =
-                  file + " (" + (imageArr[file].length + text).toString() + ")";
-                $("#" + file).text(text);
-              }
+  //             if (!dateRow) {
+  //               let outerDiv =
+  //                 '<div class="card date-row" id="' +
+  //                 file +
+  //                 '">' +
+  //                 displayText +
+  //                 '</div><div class="row image-row"></div>';
+  //               $(".image-container").append(outerDiv);
+  //             } else {
+  //               let text = parseInt(
+  //                 dateRow.innerText
+  //                   .replace("(", "")
+  //                   .replace(")", "")
+  //                   .split(" ")[1]
+  //               );
+  //               text =
+  //                 file + " (" + (imageArr[file].length + text).toString() + ")";
+  //               $("#" + file).text(text);
+  //             }
 
-              for (let i = 0; i < imageArr[file].length; i++) {
-                let ele =
-                  '<div class="col-md-3"><div class="image-card"><a href="' +
-                  imageArr[file][i].file1.replace("uploads/", "") +
-                  '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
-                  imageArr[file][i].file3.replace("uploads/", "") +
-                  '"class="img-fluid rounded images"/></a></div></div>';
-                $(".image-row").append(ele);
-              }
-            }
-          },
-          error: function(error) {
-            console.log(error);
-          }
-        });
-      }
-    });*/
-  });
+  //             for (let i = 0; i < imageArr[file].length; i++) {
+  //               let ele =
+  //                 '<div class="col-md-3"><div class="image-card"><a href="' +
+  //                 imageArr[file][i].file1.replace("uploads/", "") +
+  //                 '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
+  //                 imageArr[file][i].file3.replace("uploads/", "") +
+  //                 '"class="img-fluid rounded images"/></a></div></div>';
+  //               $(".image-row").append(ele);
+  //             }
+  //           }
+  //         },
+  //         error: function(error) {
+  //           console.log(error);
+  //         }
+  //       });
+  //     }
+  //   });
+  // });
 </script>
 <div class="modal fade" id="uploadModal">
   <div class="modal-dialog modal-dialog-centered">

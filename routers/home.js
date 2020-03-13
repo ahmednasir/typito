@@ -20,7 +20,8 @@ router.get('/',function(req, res){
 })
 
 router.post('/getImage',function(req, res){
-    imageController("existing").then(result=>{
+    
+    imageController("existing",req.body).then(result=>{
         res.send(result)
     }).catch(err=>{
         res.send(err)
