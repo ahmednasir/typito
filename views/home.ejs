@@ -73,12 +73,12 @@ include('partials/upload-modal')%>
   let loaderShow = true;
   let lastEle = "";
   function stopDefault(event) {
-    // debugger
+    
     event.preventDefault();
     event.stopPropagation();
   }
   function dragOver(label, text) {
-    // debugger
+    
     label.style.animationName = "dropbox";
     label.innerText = text;
   }
@@ -90,7 +90,7 @@ include('partials/upload-modal')%>
     label.innerText = "Click to choose images or drag-n-drop them here";
   }
   function addFilesAndSubmit(event) {
-    debugger;
+    
     var files = event.target.files || event.dataTransfer.files;
     document.getElementById("filesfld").files = files;
     fileSelected(event);
@@ -112,15 +112,17 @@ include('partials/upload-modal')%>
     $(".notification").show();
     $("#notification-card").css({ "background-color": "#f5aeab" });
     $(".notification-content").text(message);
-    $(".notification").fadeOut(4000);
+    $(".notification").fadeOut(8000);
   }
   function showWarning() {
     $(".notification").show();
     $("#notification-card").css({ "background-color": "#fffbab" });
     $(".notification-content").text("No file selected");
-    $(".notification").fadeOut(4000);
+    $(".notification").fadeOut(5000);
   }
-
+  function hideNotification(){
+    $(".notification").hide()
+  }
   function fileSelected(e) {
     let files = document.getElementById("filesfld").files;
     let names = "";
@@ -146,7 +148,7 @@ include('partials/upload-modal')%>
     $.ajax({
       type: "POST",
       enctype: "multipart/form-data",
-      url: "http://localhost:5000/upload",
+      url: "http://13.233.254.7:5000/upload",
       data: data,
       processData: false,
       contentType: false,
@@ -172,49 +174,12 @@ include('partials/upload-modal')%>
         return xhr;
       },
       success: function(data) {
-        let imageArr = data;
         loaderShow = true;
-
         $("#progress").text(100 + "%");
         $("#progress").css("width", 100 + "%");
         $(".progress").fadeOut(800);
         showSuccess();
-        debugger;
-        addImage(imageArr, "upload");
-        // for (let file in imageArr) {
-        //   let displayText = file + " (" + imageArr[file].length + ")";
-        //   let dateRow = document.getElementById(file);
-
-        //   if (!dateRow) {
-        //     let outerDiv =
-        //       '<div class="card date-row" id="' +
-        //       file +
-        //       '">' +
-        //       displayText +
-        //       '</div><div class="row image-row"></div>';
-        //     $(".image-container").append(outerDiv);
-        //   } else {
-        //     let text = parseInt(
-        //       dateRow.innerText
-        //         .replace("(", "")
-        //         .replace(")", "")
-        //         .split(" ")[1]
-        //     );
-        //     text =
-        //       file + " (" + (imageArr[file].length + text).toString() + ")";
-        //     $("#" + file).text(text);
-        //   }
-
-        //   for (let i = 0; i < imageArr[file].length; i++) {
-        //     let ele =
-        //       '<div class="col-md-3"><div class="image-card"><a href="' +
-        //       imageArr[file][i].file1.replace("uploads/", "") +
-        //       '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
-        //       imageArr[file][i].file3.replace("uploads/", "") +
-        //       '"class="img-fluid rounded images"/></a></div></div>';
-        //     $("." + file).append(ele);
-        //   }
-        // }
+        addImage(data, "upload");
       },
       error: function(e) {
         $(".progress").hide();
@@ -246,50 +211,13 @@ include('partials/upload-modal')%>
           data: { LastDate: lastEle.date },
           dataType: "json",
           success: function(data) {
-            debugger
+            
             if (Object.keys(data).length == 0) {
               loaderShow = false;
             }
             $(".bottom-loader").hide();
-            console.log(data);
-            let imageArr = data;
-            addImage(imageArr, 'scroll')
-            // for (let file in imageArr) {
-            //   let displayText = file + " (" + imageArr[file].length + ")";
-            //   let dateRow = document.getElementById(file);
-
-            //   if (!dateRow) {
-            //     let outerDiv =
-            //       '<div class="card date-row" id="' +
-            //       file +
-            //       '">' +
-            //       displayText +
-            //       '</div><div class="row image-row"></div>';
-            //     $(".image-container").append(outerDiv);
-            //   } else {
-            //     let text = parseInt(
-            //       dateRow.innerText
-            //         .replace("(", "")
-            //         .replace(")", "")
-            //         .split(" ")[1]
-            //     );
-            //     text =
-            //       file + " (" + (imageArr[file].length + text).toString() + ")";
-            //     $("#" + file).text(text);
-            //   }
-            //   let i = 0;
-            //   for (i = 0; i < imageArr[file].length; i++) {
-            //     let ele =
-            //       '<div class="col-md-3"><div class="image-card"><a href="' +
-            //       imageArr[file][i].file1.replace("uploads/", "") +
-            //       '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a"> <img src="' +
-            //       imageArr[file][i].file3.replace("uploads/", "") +
-            //       '"class="img-fluid rounded images"/></a></div></div>';
-            //     $("." + file).append(ele);
-            //   }
-
-            //   lastEle = imageArr[file][i - 1];
-            // }
+            addImage(data, 'scroll')
+          
           },
           error: function(error) {
             $(".bottom-loader").hide();
@@ -312,7 +240,7 @@ include('partials/upload-modal')%>
     }
   });
   function addImage(imageArr, addType) {
-    debugger;
+    
     for (let file in imageArr) {
       if (addType.toLowerCase() == "upload" || addType.toLowerCase() == "upload") {
         let displayText = file + " (" + imageArr[file].length + ")";
