@@ -30,19 +30,26 @@
       function openNav() {
         if(document.getElementById("mySidenav")){
           document.getElementById("mySidenav").style.width = "250px";
+	  
           if(!overlayFlag){
             document.getElementById("main").style.marginLeft = "250px";
-          }
+	  }else{
+	    document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+	  }
         }
         menuBtn.hide() 
       }
       function closeNav() {
-        
+	 if(document.getElementById("mySidenav")){
           document.getElementById("mySidenav").style.width = "0";
+          document.body.style.backgroundColor = "white";
           if(!overlayFlag){
             document.getElementById("main").style.marginLeft = "0";
           }
           menuBtn.show()
+	 }else{
+	  menuBtn.hide() 
+	 }
         }
       $("#openNav").click(function(){
         openNav()
@@ -62,7 +69,7 @@
       });
       function sideNavManip(){
         let width = $(window).width()
-        if(width>=1440){
+        if(width>1200){
           overlayFlag = false
           menuBtn.hide()
           openNav()
@@ -71,6 +78,7 @@
           menuBtn.show()
           overlayFlag = true
           closeNav()
+	
         }
       }
       sideNavManip()

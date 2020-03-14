@@ -31,6 +31,7 @@ include('partials/upload-modal')%>
   }
   .image-caption-col {
     text-align: center;
+    overflow-wrap: break-word;
   }
 </style>
 
@@ -242,7 +243,7 @@ include('partials/upload-modal')%>
   function addImage(imageArr, addType) {
     
     for (let file in imageArr) {
-      if (addType.toLowerCase() == "upload" || addType.toLowerCase() == "upload") {
+      if (addType.toLowerCase() == "upload" || addType.toLowerCase() == "scroll") {
         let displayText = file + " (" + imageArr[file].length + ")";
         let dateRow = document.getElementById(file);
 
@@ -252,7 +253,7 @@ include('partials/upload-modal')%>
             file +
             '">' +
             displayText +
-            '</div><div class="row image-row"></div>';
+            '</div><div class="row image-row '+file+'"></div>';
           $(".image-container").append(outerDiv);
         } else {
           let text = parseInt(
@@ -284,7 +285,7 @@ include('partials/upload-modal')%>
       for (i = 0; i < imageArr[file].length; i++) {
         let ele =
           '<div class="col-md-3"><div class="image-card"><a href="' +
-          imageArr[file][i].file1 +
+          imageArr[file][i].file3 +
           '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a ' +
           file +
           '_class"> <img src="' +
