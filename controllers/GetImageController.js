@@ -6,55 +6,73 @@ const myCache = new NodeCache();
 module.exports = function(fetchType, body) {
   return new Promise((resolve, reject) => {
     if (fetchType.toLowerCase() === "first") {
-      imageMetaModel.find(
-        {},
-        null,
-        { sort: { date: "descending" }, limit: config.MAX_FETCH_LIMIT },
-        function(err, docs) {
-          if (err) {
-            console.log(err);
-            reject([]);
-          }
-          if (docs.length == 0) {
-            resolve({});
-          } else {
-            let dateDict = formatData(docs, true);
+      imageMetaModel.countDocuments({}, (err, count) => {
+        if (err) {
+          console.log(err);
+          reject({});
+        } else {
+          imageMetaModel.find(
+            {},
+            null,
+            { sort: { date: "descending" }, limit: config.MAX_FETCH_LIMIT },
+            function(err, docs) {
+              if (err) {
+                console.log(err);
+                reject({});
+              }
+              if (docs.length == 0) {
+                resolve({});
+              } else {
+                let dateDict = formatData(docs, true);
 
-            myCache.set("LastDate", docs[docs.length - 1]._doc.date);
-            resolve(dateDict);
-          }
-        }
-      );
-    } else if (fetchType.toLowerCase() === "existing") {
-      console.log(body.LastDate)
-      let lastDate = new Date(body.LastDate);
-      imageMetaModel
-        .aggregate([
-          {
-            $match: {
-              date: {
-                $lt: lastDate
+                myCache.set("LastDate", docs[docs.length - 1]._doc.date);
+                resolve([dateDict, count]);
               }
             }
-            // $limit: config.MAX_FETCH_LIMIT
+          );
+        }
+      });
+    } else if (fetchType.toLowerCase() === "existing") {
+      imageMetaModel.countDocuments({}, (err, count) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          
+          if(parseInt(body.TotalDocs) < count){
+          let lastDate = new Date(body.LastDate);
+          imageMetaModel
+            .aggregate([
+              {
+                $match: {
+                  date: {
+                    $lt: lastDate
+                  }
+                }
+                // $limit: config.MAX_FETCH_LIMIT
+              }
+            ])
+            .sort({ date: "descending" })
+            .exec((err, docs) => {
+              if (err) {
+                console.log(err);
+                reject(err);
+              } else {
+                
+                if (docs.length == 0) {
+                  resolve({});
+                } else {
+                  let dateDict = formatData(docs, false);
+                  myCache.set("LastDate", docs[docs.length - 1].date);
+                  resolve([dateDict, count]);
+                }
+              }
+            });
+          }else{
+            resolve({})
           }
-        ])
-        .sort({ date: "descending" })
-        .exec((err, docs) => {
-          if (err) {
-            console.log(err);
-            reject(err);
-          } else {
-            console.log(docs.length);
-            if (docs.length == 0) {
-              resolve({});
-            } else {
-              let dateDict = formatData(docs, false);
-              myCache.set("LastDate", docs[docs.length - 1].date);
-              resolve(dateDict);
-            }
-          }
-        });
+        }
+      });
     }
   });
 };
@@ -63,7 +81,7 @@ function formatData(docs, parseFlag) {
   let dateDict = {};
 
   let filenames = [];
-  console.log(docs.length);
+  
 
   for (let file of docs) {
     let d = new Date(file.timestamp);

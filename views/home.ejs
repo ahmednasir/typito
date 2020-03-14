@@ -31,6 +31,7 @@ include('partials/upload-modal')%>
   }
   .image-caption-col {
     text-align: center;
+    overflow-wrap: break-word;
   }
 </style>
 
@@ -72,13 +73,14 @@ include('partials/upload-modal')%>
 <script>
   let loaderShow = true;
   let lastEle = "";
+  let totalDocs = 0;
+  let totalDocsDb = 0;
+  let scrollLock = false
   function stopDefault(event) {
-    
     event.preventDefault();
     event.stopPropagation();
   }
   function dragOver(label, text) {
-    
     label.style.animationName = "dropbox";
     label.innerText = text;
   }
@@ -90,7 +92,6 @@ include('partials/upload-modal')%>
     label.innerText = "Click to choose images or drag-n-drop them here";
   }
   function addFilesAndSubmit(event) {
-    
     var files = event.target.files || event.dataTransfer.files;
     document.getElementById("filesfld").files = files;
     fileSelected(event);
@@ -120,8 +121,8 @@ include('partials/upload-modal')%>
     $(".notification-content").text("No file selected");
     $(".notification").fadeOut(5000);
   }
-  function hideNotification(){
-    $(".notification").hide()
+  function hideNotification() {
+    $(".notification").hide();
   }
   function fileSelected(e) {
     let files = document.getElementById("filesfld").files;
@@ -194,32 +195,41 @@ include('partials/upload-modal')%>
     });
   }
   $(document).ready(function() {
-    let imageArr = JSON.parse(`<%- data.Images%>`);
-    
+    let res = JSON.parse(`<%- data.Images%>`);
+
+    let imageArr = res[0];
+    totalDocsDb = res[1];
     $(".upload-btn").click(function(event) {
       uploadImages();
     });
 
     $(window).scroll(function(event) {
-      if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+      if ($(window).scrollTop() + $(window).height() >= $(document).height() && !scrollLock) {
+        scrollLock = true
         if (loaderShow) $(".bottom-loader").show();
+        
         event.stopPropagation();
         event.preventDefault();
+
+        
         $.ajax({
           url: "/home/getImage",
           method: "POST",
-          data: { LastDate: lastEle.date },
+          data: { LastDate: lastEle.date, TotalDocs: totalDocs },
           dataType: "json",
           success: function(data) {
-            
+            scrollLock = false
             if (Object.keys(data).length == 0) {
               loaderShow = false;
+              $(".bottom-loader").hide();
+            } else {
+              totalDocsDb = data[1];
+              $(".bottom-loader").hide();
+              addImage(data[0], "scroll");
             }
-            $(".bottom-loader").hide();
-            addImage(data, 'scroll')
-          
           },
           error: function(error) {
+            scrollLock = false
             $(".bottom-loader").hide();
             console.log(error);
           }
@@ -240,9 +250,11 @@ include('partials/upload-modal')%>
     }
   });
   function addImage(imageArr, addType) {
-    
     for (let file in imageArr) {
-      if (addType.toLowerCase() == "upload" || addType.toLowerCase() == "scroll") {
+      if (
+        addType.toLowerCase() == "upload" ||
+        addType.toLowerCase() == "scroll"
+      ) {
         let displayText = file + " (" + imageArr[file].length + ")";
         let dateRow = document.getElementById(file);
 
@@ -252,7 +264,9 @@ include('partials/upload-modal')%>
             file +
             '">' +
             displayText +
-            '</div><div class="row image-row '+file+'"></div>';
+            '</div><div class="row image-row ' +
+            file +
+            '"></div>';
           $(".image-container").append(outerDiv);
         } else {
           let text = parseInt(
@@ -281,23 +295,25 @@ include('partials/upload-modal')%>
           $(".no-image-container").hide();
         }
       }
-      for (i = 0; i < imageArr[file].length; i++) {
-        let ele =
-          `<div class="col-md-3"><div class="image-card"><a href="` +
-          imageArr[file][i].file3 +
-          `"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a ` +
-          file +
-          `_class"> <img src="` +
-          imageArr[file][i].file3 +
-          `"class="img-fluid rounded images"/></a></div></div>`;
-        console.log($("." + file))
-        $("." + file).append(ele);
+      if (totalDocs <= totalDocsDb) {
         
+        for (i = 0; i < imageArr[file].length; i++) {
         
-        
+          let ele =
+            '<div class="col-md-3"><div class="image-card"><a href="' +
+            imageArr[file][i].file3 +
+            '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a ' +
+            file +
+            `_class"> <img src="` +
+            imageArr[file][i].file3 +
+            `"class="img-fluid rounded images"/></a></div></div>`;
+          $("." + file).append(ele);
+        }
+        totalDocs += i;
+        lastEle = imageArr[file][i - 1];
+      }else{
+        $(".bottom-loader").hide();
       }
-      lastEle = imageArr[file][i - 1];
     }
-    
   }
 </script>

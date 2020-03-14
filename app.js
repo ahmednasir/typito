@@ -40,7 +40,6 @@ app.use('/home', require('./routers/home'));
 
 
 app.listen(3000,function(e){
-    1584029744
-    console.log(new Date().getTime())
+    
     console.log("Listening on 3000")
 })

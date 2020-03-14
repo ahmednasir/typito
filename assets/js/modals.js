@@ -188,7 +188,7 @@
             }, {
                 key: 'navigateLeft',
                 value: function navigateLeft() {
-                    debugger
+                    
                     if (!this._$galleryItems) return;
     
                     if (this._$galleryItems.length === 1) return;
