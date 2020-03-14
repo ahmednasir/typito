@@ -148,7 +148,7 @@ include('partials/upload-modal')%>
     $.ajax({
       type: "POST",
       enctype: "multipart/form-data",
-      url: "http://13.233.254.7:5000/upload",
+      url: "http://localhost:5000/upload",
       data: data,
       processData: false,
       contentType: false,
@@ -242,7 +242,7 @@ include('partials/upload-modal')%>
   function addImage(imageArr, addType) {
     
     for (let file in imageArr) {
-      if (addType.toLowerCase() == "upload" || addType.toLowerCase() == "upload") {
+      if (addType.toLowerCase() == "upload" || addType.toLowerCase() == "scroll") {
         let displayText = file + " (" + imageArr[file].length + ")";
         let dateRow = document.getElementById(file);
 
@@ -252,7 +252,7 @@ include('partials/upload-modal')%>
             file +
             '">' +
             displayText +
-            '</div><div class="row image-row"></div>';
+            '</div><div class="row image-row '+file+'"></div>';
           $(".image-container").append(outerDiv);
         } else {
           let text = parseInt(
@@ -283,14 +283,18 @@ include('partials/upload-modal')%>
       }
       for (i = 0; i < imageArr[file].length; i++) {
         let ele =
-          '<div class="col-md-3"><div class="image-card"><a href="' +
-          imageArr[file][i].file1 +
-          '"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a ' +
-          file +
-          '_class"> <img src="' +
+          `<div class="col-md-3"><div class="image-card"><a href="` +
           imageArr[file][i].file3 +
-          '"class="img-fluid rounded images"/></a></div></div>';
+          `"data-toggle="lightbox" data-gallery="gallery" class="col-md-4 image-a ` +
+          file +
+          `_class"> <img src="` +
+          imageArr[file][i].file3 +
+          `"class="img-fluid rounded images"/></a></div></div>`;
+        console.log($("." + file))
         $("." + file).append(ele);
+        
+        
+        
       }
       lastEle = imageArr[file][i - 1];
     }
